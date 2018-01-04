@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin:0;
+				padding:0;
+				list-style: none;
+			}
+			input{
+				width:610px;
+				font-size:20px;
+				font-family: "微软雅黑";
+				margin:10px 5px 10px 10px;
+			}
+			span{
+				font-size: 20px;
+				font-family: "微软雅黑";
+			}
+			b{
+				font-weight: normal;
+				font-size: 20px;
+				font-family: "微软雅黑";
+			}
+			.div{
+				width:600px;
+				height:500px;
+				border:5px blue solid;
+				margin-left:10px;
+				position:relative;
+			}
+			
+			/*ul{
+				position:absolute;
+			}*/
+			li{
+				width:10px;
+				height:10px;
+				/*float:right;*/
+				position:absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="button" value="-START-" />
+		<span>Score:</span><b>0</b>
+		<div class="div">
+			<ul>
+				<li style="background-color: #000; left:20px; top:0;"></li>
+				<li style="background-color: #ccc; left:10px; top:0;"></li>
+				<li style="background-color: #eee; left:0px; top:0;"></li>
+			</ul>
+		</div>
+		<div>
+			<button type="button" onclick="la()">向左</button>
+			<button type="button" onclick="ua()">向上</button>
+			<button type="button" onclick="ra()">向右</button>
+			<button type="button" onclick="da()">向下</button>
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		var btn = document.querySelector("input"),
+			score = document.querySelector("b"),
+			div = document.querySelector(".div"),
+			ul = document.querySelector("ul"),
+			lis = document.querySelectorAll("li");  
+			//qS系列获取的都是静态的，所以后期还得继续获取；
+			//getElement...获取的都是动态的，所以后期直接使用，不需要继续获取
+		
+		var sum = 0;
+		var arr = ['yellow','blue','red','green','black','purple']
+		
+		//创建一个食物div,位置随机
+		var yuan = document.createElement("div");
+		    yuan.style.width = '10px';
+		    yuan.style.height = '10px';
+		    yuan.style.position = 'absolute';
+			
+		
+		//食物
+		function food(){
+			var x = Math.floor(Math.random()*60);
+			var y = Math.floor(Math.random()*50);
+			//console.log(x,y)
+			var brr = ['yellow','blue','red','green','black','purple']
+			yuan.style.backgroundColor = brr[Math.floor(Math.random()*6)];
+			div.appendChild(yuan)
+			yuan.style.left = yuan.offsetWidth*x +'px';
+			yuan.style.top = yuan.offsetHeight*y +'px';
+		}
+		food()
+		
+		//贪吃蛇
+		var r = true ,
+			l = false ,
+			u = false ,
+			d = false ;
+		var moveLR=1,moveUP=0;
+		
+		//function snake(){
+			var timer = setInterval(function(){
+				for(var i=lis.length-1;i>0;i--){
+					lis[i].style.left = lis[i-1].offsetLeft +'px';
+					lis[i].style.top = lis[i-1].offsetTop +'px';
+				}
+				lis[0].style.left = lis[0].offsetLeft + 10*moveLR +'px';
+				lis[0].style.top = lis[0].offsetTop + 10*moveUP +'px';
+				
+				
+				
+				//键盘
+				document.onkeydown = function(e){
+					var e = e || window.event;
+					if(e.keyCode === 37){
+						//向左left
+						//如果是向右的，则保持不变
+						//如果是向左的，则保持不变
+						//如果是向上的，则向左行驶
+						//如果是向下的，则向左行驶
+						
+						if(l||r){
+							return;
+						}
+						r = false;
+						l = true;
+						u = false;
+						d = false;
+						moveLR=-1;
+						moveUP=0;
+					}
+					else if(e.keyCode === 38){
+						//向上up
+						//如果是向上的，则保持不变
+						//如果是向下的，则保持不变
+						//如果是向左的，则向上行驶
+						//如果是向右的，则向上行驶
+						
+						if(u||d){
+							return;
+						}
+						r = false;
+						l = false;
+						u = true;
+						d = false;
+						moveLR=0;
+						moveUP=-1;
+					}
+					else if(e.keyCode === 39){
+						//向右right
+						//如果是向右的，则保持不变
+						//如果是向左的，则保持不变
+						//如果是向上的，则向右行驶
+						//如果是向下的，则向右行驶
+						
+						if(r||l){
+							return;
+						}
+						r = true;
+						l = false;
+						u = false;
+						d = false;
+						moveLR=1;
+						moveUP=0;
+					}
+					else if(e.keyCode === 40){
+						//向下down
+						//如果是向上的，则保持不变
+						//如果是向下的，则保持不变
+						//如果是向左的，则向下行驶
+						//如果是向右的，则向下行驶
+						
+						//if(u==true || d==true){ 等同于以下的条件
+						if(u||d){
+							return;
+						}
+						r = false;
+						l = false;
+						u = false;
+						d = true;
+						moveLR=0;
+						moveUP=1;
+					}
+				}
+				
+				//鼠标点击
+				function la(){
+					if(l||r){
+							return;
+						}
+						r = false;
+						l = true;
+						u = false;
+						d = false;
+						moveLR=-1;
+						moveUP=0;
+				}
+				
+				function ua(){	
+					if(u||d){
+							return;
+						}
+						r = false;
+						l = false;
+						u = true;
+						d = false;
+						moveLR=0;
+						moveUP=-1;
+				}
+				
+				function ra(){
+					if(r||l){
+							return;
+						}
+						r = true;
+						l = false;
+						u = false;
+						d = false;
+						moveLR=1;
+						moveUP=0;
+				}
+				
+				function da(){	
+					if(u||d){
+							return;
+						}
+						r = false;
+						l = false;
+						u = false;
+						d = true;
+						moveLR=0;
+						moveUP=1;
+				}
+				
+				//吃食物
+				var sx = lis[0].offsetLeft+5;
+				var dx = yuan.offsetLeft+5;
+				var sy = lis[0].offsetTop+5;
+				var dy = yuan.offsetTop+5;
+				var xx = dx - sx;
+				var yy = dy - sy;
+				var rr = Math.sqrt((xx*xx) + (yy*yy))
+				
+				if(rr == 0){
+					//创建一个li元素作为新增的蛇尾巴
+					var li = document.createElement("li");
+					li.style.width = '10px';
+					li.style.height = '10px';
+					li.style.backgroundColor = arr[Math.floor(Math.random()*6)];
+					li.style.position = 'absolute';
+					
+					yuan.remove();
+					food();
+					sum++;
+					score.innerText = sum;
+					ul.appendChild(li);
+					//lis.length ++;
+					lis = ul.querySelectorAll("li");
+					
+				}
+				
+				//撞墙效果
+				var zx = lis[0].offsetLeft;
+				var zy = lis[0].offsetTop;
+				if(zx<0 || zx>600 || zy<0 || zy>500){
+					alert("Game Over")
+					clearInterval(timer)
+				}
+				
+				//吃自己效果
+//				for(var j=0;j<lis.length;j++){
+//					var cx = lis[0].offsetLeft;
+//					var cy = lis[0].offsetTop;
+//					var jx = lis[j].offsetLeft;
+//					var jy = lis[j].offsetTop;
+//					if(cx==jx && cy==jy){
+//						alert("Game Over")
+//						clearInterval(timer)
+//					}
+//				}
+				
+			},300)
+		//}
+		//snake();
+		
+	</script>
+</html>

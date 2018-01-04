@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin:0;
+				padding:0;
+				list-style: none;
+			}
+			input{
+				width:610px;
+				font-size:20px;
+				font-family: "微软雅黑";
+				margin:10px 5px 10px 10px;
+			}
+			span{
+				font-size: 20px;
+				font-family: "微软雅黑";
+			}
+			.div{
+				width:600px;
+				height:500px;
+				border:5px blue solid;
+				margin-left:10px;
+				position:relative;
+			}
+			#yuan{
+				width:10px;
+				height:10px;
+				background-color: brown;
+				position:absolute;
+			}
+			ul{
+				position:absolute;
+			}
+			li{
+				width:10px;
+				height:10px;
+				float:right;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="button" value="-START-" />
+		<span>Score:</span>
+		<div class="div">
+			<div id="yuan"></div>
+			<ul>
+				<li style="background-color: #000;"></li>
+				<li style="background-color: #ccc;"></li>
+				<li style="background-color: #eee;"></li>
+			</ul>
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		var btn = document.querySelector("input"),
+			score = document.querySelector("span"),
+			div = document.querySelector(".div"),
+			yuan = document.querySelector("#yuan"),
+			ul = document.querySelector("ul"),
+			li = document.querySelectorAll("li");
+		
+		/*btn.onclick = function(){
+			timer  = setInterval(function(){
+				
+			},500)
+		}*/
+		
+		//食物
+		function food(){
+			var x = Math.floor(Math.random()*60);
+			var y = Math.floor(Math.random()*50);
+			//console.log(x,y)
+			yuan.style.left = yuan.offsetWidth*x +'px';
+			yuan.style.top = yuan.offsetHeight*y +'px';
+		}
+		food()
+		
+		//贪吃蛇
+		function snake(){
+			var timer = setInterval(function(){
+				var i=10,j=10;
+				//ul.style.left = ul.offsetLeft + i + 'px';
+				//键盘
+				document.onkeydown = function(e){
+					var e = e || window.event;
+					if(e.keyCode === 37){
+						setInterval(function(){
+							ul.style.left = ul.offsetLeft - i + 'px';
+						},100)
+					}
+					else if(e.keyCode === 38){
+						setInterval(function(){
+							ul.style.top = ul.offsetTop - j + 'px';
+						},100)
+					}
+					else if(e.keyCode === 39){
+						setInterval(function(){
+							ul.style.left = ul.offsetLeft + i + 'px';
+						},100)
+					}
+					else if(e.keyCode === 40){
+						setInterval(function(){
+							ul.style.top = ul.offsetTop + j + 'px';
+						},100)
+					}
+				}
+			},100)
+		}
+		snake();
+	</script>
+</html>
